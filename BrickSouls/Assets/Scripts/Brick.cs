@@ -16,6 +16,7 @@ public class Brick : MonoBehaviour
             }
             gameObject.SetActive(false);
             //GameManager.instance.BlockDestroy();
+            Destroy(this.gameObject);
         }
     }
     // Start is called before the first frame update
