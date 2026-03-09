@@ -32,8 +32,7 @@ public class Capsule : MonoBehaviour
 
     void Awake()
     {
-        // Obtenemos el SpriteRenderer (para cambiar la imagen) 
-        // y el Collider (para apagarlo cuando lo recojas)
+        
         spriteRenderer = GetComponent<SpriteRenderer>();
         miCollider = GetComponent<Collider>();
     }
@@ -47,16 +46,13 @@ public class Capsule : MonoBehaviour
             currentBall = ballObj.transform;
         }
 
-        // Elegimos un tipo al azar AL NACER (así el jugador ve qué va a recoger)
-        // Nota importante: Random.Range con enteros excluye el número máximo. 
-        // Para que salga 0 o 1, debes poner (0, 2).
-        int tipoAleatorio = Random.Range(0, 2);
+        int tipoAleatorio = Random.Range(0, 3);
         ConfigurarPowerUp((TipoPowerUp)tipoAleatorio);
     }
 
     void Update()
     {
-        // Tu lógica original de movimiento
+        
         this.transform.Translate(Vector3.right * -1 * speed * Time.deltaTime);        
     }
 
@@ -74,10 +70,10 @@ public class Capsule : MonoBehaviour
                 spriteRenderer.sprite = spriteVelocidad;
                 break;
             case TipoPowerUp.VidaExtra:
-                spriteRenderer.sprite = spriteVidaExtra; // Aquí asignarías el sprite correspondiente a Vida Extra
+                spriteRenderer.sprite = spriteVidaExtra; 
                 break;
             case TipoPowerUp.Inmundad:
-                spriteRenderer.sprite = spriteInmundad; // Aquí asignarías el sprite correspondiente a Inmundad 
+                spriteRenderer.sprite = spriteInmundad;  
                 break;
         }
     }
@@ -86,12 +82,9 @@ public class Capsule : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            // 1. Ocultamos la cápsula y apagamos su colisión para no agarrarla 2 veces.
-            // NO destruimos el objeto aún, porque si lo destruimos, las Corrutinas se mueren al instante.
             spriteRenderer.enabled = false;
             miCollider.enabled = false;
 
-            // 2. Activamos el poder basado en el tipo que ya tenía asignado
             switch (miTipo)
             {
                 case TipoPowerUp.MultiBola:
@@ -151,10 +144,7 @@ public class Capsule : MonoBehaviour
 
     IEnumerator ExtraHealthCoroutine() 
     { 
-        // Aquí iría la lógica para darle una vida extra al jugador.
-        // Esto depende de cómo tengas implementado tu sistema de vidas.
-        // Por ejemplo, si tienes un GameManager con una variable de vidas, podrías hacer algo como:
-        // GameManager.instance.AddLife();
+        GameManager.instance.AddLife();
 
         yield return new WaitForSeconds(3f);
 
@@ -164,10 +154,7 @@ public class Capsule : MonoBehaviour
 
     IEnumerator ExtraMundanityCoroutine() 
     { 
-        // Aquí iría la lógica para hacer al jugador inmune a daños.
-        // Esto depende de cómo tengas implementado tu sistema de daños.
-        // Por ejemplo, podrías tener una variable "isInvulnerable" en tu script de jugador que pongas en true aquí, y luego en false después del tiempo.
-
+       
         yield return new WaitForSeconds(3f);
 
         // Ya terminó el poder, ahora sí destruimos este power-up

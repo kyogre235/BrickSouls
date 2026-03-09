@@ -165,6 +165,11 @@ void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
         Time.timeScale = 0f;
     }
 
+    public void AddLife()
+    {
+        lives++;
+    }
+
     public void LoseLifes()
     {
         lives--;
