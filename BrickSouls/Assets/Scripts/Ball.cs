@@ -15,7 +15,7 @@ public class Ball : MonoBehaviour
     public Vector3 offsetFromPad = new Vector3(0f,0.65f, 0f);
 
     void Awake()
-    {
+    {   
         rb = GetComponent<Rigidbody>();
         padtransform = GameObject.Find("Player").transform;
     }
@@ -35,6 +35,11 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("Player") && gameObject.CompareTag("BallEnemy"))
+        {
+            Destroy(gameObject);
+        }
+        
         if (collision.gameObject.CompareTag("Player"))
         {
             Launch();
@@ -77,25 +82,35 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "DeathZone")
+        if (other.gameObject.tag == "DeathZone" && gameObject.CompareTag("Ball"))
         {
             ResetBall();
-            //GameManager.instance.LoseLifes();
+            GameManager.instance.LoseLifes();
+        } else if (other.gameObject.tag == "DeathZone" && gameObject.CompareTag("BallClone"))
+        {
+            Destroy(gameObject);
+        } else if(other.gameObject.tag == "DeathZone" && gameObject.CompareTag("BallEnemy"))
+        {
+            Destroy(gameObject);
+            GameManager.instance.LoseLifes();
         }
     }
 
     void Update()
-    {
+    {   
         if (!launched)
         {
-            FollowPad();
-            if (Input.GetKeyDown(KeyCode.Space))
+            if(gameObject.CompareTag("Ball"))
             {
-                Launch();
+                FollowPad();
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Launch();
+                }
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && gameObject.CompareTag("Ball"))
         {
             ResetBall();
         }

@@ -236,12 +236,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 832539993181772934, guid: b09c39bd642cb8880b35b975d46bf9f7, type: 3}
+      propertyPath: m_Mass
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 832539993181772934, guid: b09c39bd642cb8880b35b975d46bf9f7, type: 3}
       propertyPath: m_Constraints
       value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 832539993181772934, guid: b09c39bd642cb8880b35b975d46bf9f7, type: 3}
       propertyPath: m_IsKinematic
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2145789976493590379, guid: b09c39bd642cb8880b35b975d46bf9f7, type: 3}
       propertyPath: rb
@@ -302,6 +306,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5574359724031973991, guid: b09c39bd642cb8880b35b975d46bf9f7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 301035332}
+    - targetCorrespondingSourceObject: {fileID: 5574359724031973991, guid: b09c39bd642cb8880b35b975d46bf9f7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 301035336}
   m_SourcePrefab: {fileID: 100100000, guid: b09c39bd642cb8880b35b975d46bf9f7, type: 3}
 --- !u!1 &175440632
 GameObject:
@@ -544,6 +551,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &301035336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 301035325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 983a765f0d5096530af1e4f1bacc8d86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 7
+  rb: {fileID: 0}
+  input: 0
 --- !u!1 &330151880
 GameObject:
   m_ObjectHideFlags: 0
@@ -1608,7 +1630,7 @@ GameObject:
   - component: {fileID: 1751971859}
   m_Layer: 0
   m_Name: Izquierda
-  m_TagString: Untagged
+  m_TagString: Izquierda
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1771,7 +1793,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1909102068}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

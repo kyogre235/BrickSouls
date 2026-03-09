@@ -4,46 +4,44 @@ using UnityEngine;
 
 public class Brick : MonoBehaviour
 {
-    public GameObject capsule;
+public GameObject capsule;
+
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ball"))
+        if (collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("BallClone"))
         {
-            int posibility = Random.Range(0,10);
+            int posibility = Random.Range(0, 10);
             if (posibility < 5)
             {
                 Instantiate(capsule, this.transform.position, capsule.transform.rotation);
             }
             gameObject.SetActive(false);
-            //GameManager.instance.BlockDestroy();
+            GameManager.instance.BlockDestroy();
             Destroy(this.gameObject);
         }
     }
+
     // Start is called before the first frame update
     void Start()
     {
-        // 1. Cargamos todas las texturas de la carpeta Resources/Bricks
-        Object[] texturas = Resources.LoadAll("Bricks", typeof(Texture2D));
+        // 1. Cargamos todos los Sprites de la carpeta Resources/Bricks/Level_1
+        // Usamos la versión genérica <Sprite> que es más limpia y directa
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Bricks/Level_1");
 
-        if (texturas.Length > 0)
+        if (sprites.Length > 0)
         {
             // 2. Elegimos un índice al azar
-            int indiceAzar = Random.Range(0, texturas.Length);
-            Texture2D texturaElegida = (Texture2D)texturas[indiceAzar];
+            int indiceAzar = Random.Range(0, sprites.Length);
+            Sprite spriteElegido = sprites[indiceAzar];
 
-            // 3. La asignamos al material del Quad
-            // Usamos "_MainTex" que es el nombre estándar en la mayoría de Shaders
-            GetComponent<Renderer>().material.mainTexture = texturaElegida;
+            // 3. Buscamos el componente SpriteRenderer y le asignamos el Sprite
+            GetComponent<SpriteRenderer>().sprite = spriteElegido;
             
-            Debug.Log("Textura seleccionada: " + texturaElegida.name);
+            Debug.Log("Sprite seleccionado: " + spriteElegido.name);
         }
         else
         {
-            Debug.LogError("¡No se encontraron texturas en Resources/Bricks!");
+            Debug.LogError("¡No se encontraron sprites en Resources/Bricks/Level_1!");
         }
-        //Color randomColor = new Color(Random.value, Random.value, Random.value);
-        //GetComponent<Renderer>().material.color = randomColor;
     }
-
-    // Update is called once per frame
 }
