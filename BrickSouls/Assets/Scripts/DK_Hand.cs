@@ -11,8 +11,8 @@ public class DK_Hand : MonoBehaviour
     [Header("Ataque de Fuego")]
     public GameObject fireballPrefab;  
     public Transform firePoint;        
-    public float throwForce = 4f;     
-    public float cooldown = 6f;       
+    public float throwForce = 3f;     
+    public float cooldown = 12f;       
     
     // Variables de control interno
     private float nextFireTime = 0f;

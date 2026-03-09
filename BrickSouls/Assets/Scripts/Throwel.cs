@@ -49,8 +49,8 @@ public class Throwel : MonoBehaviour
             }
             else
             {
-                
-                GameManager.instance.EnemyDestroy(); 
+                GameManager.instance.EnemyDestroy();
+                Destroy(gameObject);
             }
         } else if (collision.CompareTag("BallClone"))
         {

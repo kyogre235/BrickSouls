@@ -10,14 +10,13 @@ public class GameManager : MonoBehaviour
  public static GameManager instance;
 
     static public int score = 0;
-    static public int lives = 5;
+    static public int lives = 4;
     public Brick[] blocks;
     public int blockCount = 0;
     public int enemyCount = 0;
 
     [Header("UI")]
     public TMP_Text scoreText;
-    public TMP_Text livesText;
     public GameObject gameScreen;   
     public GameObject resetScreen;
     public GameObject victoryScreen;
@@ -26,6 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject pauseMenuPanel;
     public GameObject padObject;
     public GameObject ballObject;
+    public Animator playerAnimator;
     
 
     private void Awake()
@@ -41,7 +41,26 @@ public class GameManager : MonoBehaviour
     }
     // Start is called before the first frame update
     void Start()
-    {
+    {   
+        
+
+        if (lives >= 4) 
+        {
+            playerAnimator.Play("Knight_Idle"); // Cambia "Idle_4" por tu nombre real
+        }
+        else if (lives == 3) 
+        {
+            playerAnimator.Play("Knight_Idle_Hit1");
+        }
+        else if (lives == 2) 
+        {
+            playerAnimator.Play("Knight_Idle_Hit2");
+        }
+        else if (lives <= 1) 
+        {
+            playerAnimator.Play("Knight_Idle_Hit3");
+        }
+
         blocks = FindObjectsOfType<Brick>(false);
         blockCount = blocks.Length;
         enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
@@ -62,6 +81,10 @@ public class GameManager : MonoBehaviour
     // Aseguramos que el tiempo esté corriendo (escala 1)
     Time.timeScale = 1f;
     isPaused = false;
+    if (playerAnimator != null)
+        {
+            playerAnimator.SetInteger("Lives", lives);
+        }
     }
 
     private void OnEnable()
@@ -87,8 +110,7 @@ void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
         GameObject scoreObj = GameObject.Find("ScoreText");
         if (scoreObj != null) scoreText = scoreObj.GetComponent<TMP_Text>();
 
-        GameObject livesObj = GameObject.Find("LivesText");
-        if (livesObj != null) livesText = livesObj.GetComponent<TMP_Text>();
+        
 
         
         if (pauseMenuPanel != null) pauseMenuPanel.SetActive(false);
@@ -115,7 +137,7 @@ void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     void Update()
     {
         scoreText.text = $"Puntos: {score}";
-        livesText.text = $"Vidas: {lives}";
+        //livesText.text = $"Vidas: {lives}";
         if (Input.GetKeyDown(KeyCode.P))
         {
             //ButtonManager.OnPauseClick();
@@ -166,18 +188,29 @@ void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     }
 
     public void AddLife()
-    {
+    {   
+        if(lives >= 4) return; // No puedes tener más de 4 vidas
         lives++;
+        if (playerAnimator != null)
+        {
+            playerAnimator.SetInteger("Lives", lives);
+        }
     }
 
     public void LoseLifes()
     {
         lives--;
+
+        if (playerAnimator != null)
+        {
+            playerAnimator.SetInteger("Lives", lives);
+        }
         if(lives <= 0)
         {
             Debug.Log("Game Over!");
             EndGame();
         }
+        
     }
 
     public void EndGame()
@@ -195,7 +228,7 @@ void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
     public void ResetGame()
     {
         score = 0;
-        lives = 3;
+        lives = 4;
 
 
         Time.timeScale = 1f; 
