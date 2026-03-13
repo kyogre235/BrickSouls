@@ -27,6 +27,27 @@ public class GameManager : MonoBehaviour
     public GameObject ballObject;
     public Animator playerAnimator;
     
+    [Header("Audio")]
+    public AudioSource sfxSource; 
+    public AudioSource bgmSource; 
+
+    [Header("Sonidos")]
+    public AudioClip hitSoundEnemies; 
+    public AudioClip hitSoundPlayer;  
+    public AudioClip deathSound; 
+    public AudioClip hitSoundBlocks;
+
+    public AudioClip winSound;
+    public AudioClip loseSound;
+    
+    public void PlaySFX(AudioClip clip)
+    {
+        if (sfxSource != null && clip != null)
+        {
+            // PlayOneShot reproduce el sonido sin interrumpir los que ya están sonando
+            sfxSource.PlayOneShot(clip);
+        }
+    }
 
     private void Awake()
     {
@@ -151,6 +172,10 @@ void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
         blockCount--;
         score += 100;
         CheckWinCondition();
+        if (GameManager.instance != null)
+            {
+                GameManager.instance.PlaySFX(hitSoundBlocks);
+            }
     }
 
     public void EnemyDestroy()
@@ -158,6 +183,10 @@ void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
         enemyCount--;
         score += 200; 
         CheckWinCondition();
+        if (GameManager.instance != null)
+            {
+                GameManager.instance.PlaySFX(deathSound);
+            }
     }
 
     private void CheckWinCondition()
@@ -185,6 +214,17 @@ void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
             victoryScreen.SetActive(true);
         }
         Time.timeScale = 0f;
+       
+        if (bgmSource != null) 
+        {
+            bgmSource.Stop();
+        }
+
+        
+        if (winSound != null) 
+        {
+            PlaySFX(winSound);
+        }
     }
 
     public void AddLife()
@@ -210,6 +250,10 @@ void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
             Debug.Log("Game Over!");
             EndGame();
         }
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.PlaySFX(hitSoundPlayer);
+        }
         
     }
 
@@ -223,6 +267,16 @@ void OnSceneFinishedLoading(Scene scene, LoadSceneMode mode)
         }
         resetScreen.SetActive(true);
         Time.timeScale = 0f;
+        if (bgmSource != null) 
+        {
+            bgmSource.Stop();
+        }
+
+        
+        if (loseSound != null) 
+        {
+            PlaySFX(loseSound);
+        }
     }
 
     public void ResetGame()

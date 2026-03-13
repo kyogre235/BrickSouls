@@ -15,6 +15,10 @@ public class DemonKing : MonoBehaviour
     private Animator anim;
     private bool isDead = false;
 
+    [Header("Sonidos")]
+    public AudioClip deathBossSound; 
+    public AudioClip laughSound;  
+
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -61,6 +65,11 @@ public class DemonKing : MonoBehaviour
         isDead = true; // Evita que siga riendo o recibiendo daño
         Debug.Log("¡Jefe derrotado!");
 
+        if (GameManager.instance != null)
+            {
+                GameManager.instance.PlaySFX(deathBossSound);
+            }
+
         // Le avisamos al GameManager para la condición de victoria
         if (GameManager.instance != null)
         {
@@ -86,6 +95,10 @@ public class DemonKing : MonoBehaviour
             if (!isDead && anim != null)
             {
                 anim.SetTrigger("Laugh");
+            }
+            if (!isDead && GameManager.instance != null)
+            {
+                GameManager.instance.PlaySFX(laughSound);
             }
         }
     }

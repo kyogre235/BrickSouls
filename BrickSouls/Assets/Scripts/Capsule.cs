@@ -30,6 +30,9 @@ public class Capsule : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Collider miCollider;
 
+    [Header("Efectos de Sonido")]
+    public AudioClip getpowerUpSound;
+
     void Awake()
     {
         
@@ -103,6 +106,10 @@ public class Capsule : MonoBehaviour
                     Debug.Log("PowerUp 4: Inmundad activada");
                     StartCoroutine(ExtraMundanityCoroutine());
                     break;
+            }
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.PlaySFX(getpowerUpSound);
             }
         }
     }
